@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drag and Drop Matching</title>
+  <style>
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    .box, .item {
+      border: 2px dashed #ccc;
+      padding: 10px;
+      width: 250px;
+      min-height: 100px;
+      text-align: center;
+      margin: 10px;
+    }
+    .item {
+      background-color: #f0f8ff;
+      cursor: grab;
+    }
+    .box {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Drag the items to their correct category</h2>
+
+<div class="container">
+  <div class="item" draggable="true" id="observing">Observing</div>
+  <div class="item" draggable="true" id="punctuality">Punctuality</div>
+  <div class="item" draggable="true" id="social_media_posts">Social Media Posts</div>
+  <div class="item" draggable="true" id="appropriate_attire">Wearing Appropriate Attire</div>
+  <div class="item" draggable="true" id="setting_up">Setting Up the Coaching Area in Advance</div>
+  <div class="item" draggable="true" id="testimonials">Player/Other Coach Testimonials or Endorsements</div>
+  <div class="item" draggable="true" id="tone_of_voice">Tone of Voice and Feedback</div>
+  <div class="item" draggable="true" id="reaction">Your Reaction When a Shot by a Player Doesn't Go as Planned</div>
+  <div class="item" draggable="true" id="consistency">Consistency in Your Arrival Time</div>
+  <div class="item" draggable="true" id="speak_about_others">How You Speak About Other Coaches or Players</div>
+  <div class="item" draggable="true" id="handle_conflict">How You Handle Conflict</div>
+  <div class="item" draggable="true" id="balancing_fun">Balancing Fun and Discipline Appropriately During Sessions</div>
+</div>
+
+<div class="container">
+  <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)" id="visible_image">Visible Image or Body Language</div>
+  <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)" id="conduct_character">Conduct and Character</div>
+</div>
+
+<script>
+  const correctMatches = {
+    observing: "visible_image",
+    punctuality: "visible_image",
+    social_media_posts: "visible_image",
+    appropriate_attire: "visible_image",
+    setting_up: "visible_image",
+    testimonials: "visible_image",
+    tone_of_voice: "conduct_character",
+    reaction: "conduct_character",
+    consistency: "conduct_character",
+    speak_about_others: "conduct_character",
+    handle_conflict: "conduct_character",
+    balancing_fun: "conduct_character"
+  };
+
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  document.querySelectorAll('.item').forEach(item => {
+    item.addEventListener('dragstart', ev => {
+      ev.dataTransfer.setData("text", ev.target.id);
+    });
+  });
+
+  function drop(ev) {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData("text");
+    const draggedElement = document.getElementById(data);
+    if (ev.target.classList.contains('box')) {
+      ev.target.appendChild(draggedElement);
+      checkAnswer(data, ev.target.id);
+    }
+  }
+
+  function checkAnswer(itemId, boxId) {
+    if (correctMatches[itemId] === boxId) {
+      alert("✅ Correct!");
+    } else {
+      alert("❌ Try again!");
+    }
+  }
+</script>
+
+</body>
+</html>
